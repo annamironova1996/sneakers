@@ -1,0 +1,75 @@
+.cart
+  display: flex
+  flex-direction: column
+  position: fixed
+  padding: 30px
+  width: 385px
+  height: 100%
+  right: 0
+  background: #FFF
+  box-shadow: -10px 4px 24px 0px rgba(0, 0, 0, 0.10)
+  &TitleWrapper 
+    display: flex
+    justify-content: space-between  
+  h2 :
+    margin-bottom: 30px
+    font-size: 24px
+  &CloseButton
+    position: relative
+    margin-left: 35px
+    width: 32px
+    height: 32px
+    border: none
+    background-color: transparent
+    cursor: pointer
+    img
+      position: absolute
+      left: 0
+      top: 0
+      opacity: 0.7
+      transition: opacity 0.15s ease-in-out
+      &:hover
+        opacity: 1
+  &Items
+    height: 65%
+    overflow: auto
+  &Item 
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 20px
+    margin-right: 30px
+    padding: 0 20px
+    border-radius: 20px
+    border: 1px solid #F3F3F3
+    overflow: hidden
+    &Description 
+      p :
+        font-size: 16px
+      b :
+        font-size: 14px
+    &Img 
+      margin-right: 20px
+      width: 120px
+      height: 90px
+      background-size: contain
+      background-repeat: no-repeat
+      background-position: 0 10px
+      margin-right: 20px  
+.cartEnd
+  list-style: none
+  display: flex
+  flex-direction: column
+  padding: 0
+  &List
+    margin-bottom: 19px
+    display: flex
+    justify-content: space-between
+    align-items: flex-end
+  &Line
+    height: 1px
+    flex: 1
+    border-bottom: 1px dashed #DFDFDF
+    margin-bottom: 4px
+    margin-left: 10px
+    margin-right: 10px

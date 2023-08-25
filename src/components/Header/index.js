@@ -1,7 +1,9 @@
-const Header = () => {
+import styles from "./Header.module.sass";
+
+const Header = ({ onCartClick }) => {
   return (
-    <header className="header">
-      <div className="header-left">
+    <header className={styles.header}>
+      <div className={styles.headerLeft}>
         <img
           src="/img/logo.png"
           className="mr-15"
@@ -13,15 +15,15 @@ const Header = () => {
           <p>Магазин лучших кроссовок</p>
         </div>
       </div>
-      <ul className="header-right">
-        <li>
+      <ul className={styles.headerRight}>
+        <li onClick={onCartClick}>
           <img
             width={18}
             height={18}
             alt=""
             src="/img/cart.svg"
           />
-          <span className="ml-10">1205 руб.</span>
+          <span>1205 руб.</span>
         </li>
         <li>
           <img
