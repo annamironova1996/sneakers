@@ -2,23 +2,34 @@ import { useState } from "react";
 import styles from "./Card.module.sass";
 
 const Card = (props) => {
+  const { title, img, price, id, onPlus, onFavorites } = props;
   const [isAdded, setIsAdded] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleClickFavorite = () => {
+    onFavorites({ title, img, price, id });
+    setIsFavorite(!isFavorite);
+  };
 
   const handleClickPlus = () => {
+    onPlus({ title, img, price, id });
     setIsAdded(!isAdded);
   };
 
-  const { title, img, price } = props;
   return (
     <div className={styles.card}>
       <button className={styles.cardFavorites}>
         <img
+          onClick={handleClickFavorite}
           width="100%"
           height="100%"
-          src="/img/buttons/heart_unliked.svg"
+          src={
+            isFavorite
+              ? "/img/buttons/heart_liked.svg"
+              : "/img/buttons/heart_unliked.svg"
+          }
         />
       </button>
-
       <img
         width={133}
         height={112}

@@ -1,4 +1,5 @@
 .cart
+  
   display: flex
   flex-direction: column
   position: fixed
@@ -31,7 +32,6 @@
       &:hover
         opacity: 1
   &Items
-    height: 65%
     overflow: auto
   &Item 
     display: flex
@@ -56,7 +56,34 @@
       background-repeat: no-repeat
       background-position: 0 10px
       margin-right: 20px  
+  &Box
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    display: flex
+    flex-direction: column
+    align-content: center
+    align-items: center
+    margin: 0 auto
+    width: 80%
+    
+    &Img 
+      width: 120px
+      height: 120px
+      margin-bottom: 21px
+    p
+      font-size: 22px
+      font-weight: 600
+      margin-bottom: 9px
+    span
+      font-size: 16px
+      font-weight: 400
+      line-height: 24px
+      text-align: center
+      margin-bottom: 40px
+    
 .cartEnd
+
   list-style: none
   display: flex
   flex-direction: column
@@ -73,3 +100,5 @@
     margin-bottom: 4px
     margin-left: 10px
     margin-right: 10px
+
+

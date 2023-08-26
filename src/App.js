@@ -1,48 +1,66 @@
 import { useState, useEffect } from "react";
-import Card from "./components/Card";
+import { Route, Routes } from "react-router-dom";
+import axios from "axios";
 import Header from "./components/Header";
 import Cart from "./components/Cart";
+import Home from "./pages/Home";
 
 function App() {
   const [cards, setCards] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [favorites, setFavorites] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [openCart, setOpenCart] = useState(false);
 
   useEffect(() => {
-    fetch("https://64e8f49f99cf45b15fe05c4e.mockapi.io/cards")
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setCards(json);
-      });
+    axios.get("http://localhost:3001/cards").then((res) => {
+      setCards(res.data);
+    });
+    axios.get("http://localhost:3001/cart").then((res) => {
+      setCartItems(res.data);
+    });
   }, []);
+
+  const onAddToFavorites = (obj) => {
+    axios.post("http://localhost:3001/favorites", obj);
+    setFavorites((prev) => [...prev, obj]);
+  };
+
+  const onAddToCard = (obj) => {
+    axios.post("http://localhost:3001/cart", obj);
+    setCartItems((prev) => [...prev, obj]);
+  };
+
+  const onRemoveCartItem = (id) => {
+    axios.delete(`http://localhost:3001/cart/${id}`);
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value);
+  };
 
   return (
     <div className="header-wrapper">
-      {openCart && <Cart onClick={() => setOpenCart(false)} />}
+      {openCart && (
+        <Cart
+          items={cartItems}
+          onClick={() => setOpenCart(false)}
+          onRemoveCartItem={onRemoveCartItem}
+        />
+      )}
       <Header onCartClick={() => setOpenCart(true)} />
-      <div className="content">
-        <div className="content-wrapper">
-          <h1>Все кроссовки</h1>
-          <div className="content-search">
-            <img
-              src="/img/search.svg"
-              alt=""
-            />
-            <input placeholder="Поиск..." />
-          </div>
-        </div>
 
-        <div className="card-wrapper">
-          {cards.map((card) => (
-            <Card
-              img={card.img}
-              title={card.title}
-              price={card.price}
-            />
-          ))}
-        </div>
-      </div>
+      <Route path="/">
+        <Home
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          onChangeSearchInput={onChangeSearchInput}
+          cards={cards}
+          onAddToCard={onAddToCard}
+          onAddToFavorites={onAddToFavorites}
+        />
+      </Route>
     </div>
   );
 }
