@@ -1,17 +1,15 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes } from "react-router-dom";
 import "./index.sass";
 import App from "./App";
 import "macro-css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <React.StrictMode>
-      <Routes>
-        <App />
-      </Routes>
-    </React.StrictMode>
-  </BrowserRouter>
+  <React.StrictMode>
+    <Router>
+      <App />
+    </Router>
+  </React.StrictMode>
 );

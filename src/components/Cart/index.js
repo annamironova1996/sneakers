@@ -19,9 +19,9 @@ const Cart = ({ onClick, items, onRemoveCartItem }) => {
         {items.length > 0 ? (
           <section>
             <div className={styles.cartItems}>
-              {items.map((item, index) => (
+              {items.map((item) => (
                 <div
-                  key={index}
+                  key={item.id}
                   className={styles.cartItem}
                 >
                   <div

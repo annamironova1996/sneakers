@@ -1,23 +1,26 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./Header.module.sass";
 
 const Header = ({ onCartClick }) => {
   return (
     <header className={styles.header}>
-      <div className={styles.headerLeft}>
-        <NavLink to="/">
-          <img
-            src="/img/logo.png"
-            className="mr-15"
-            width={40}
-            height={40}
-          />
-          <div>
-            <h3 className="text-uppercase">sneakers</h3>
-            <p>Магазин лучших кроссовок</p>
-          </div>
-        </NavLink>
-      </div>
+      <Link
+        className={styles.headerLeft}
+        to="/"
+      >
+        <img
+          src="/img/logo.png"
+          className="mr-15"
+          width={40}
+          height={40}
+        />
+
+        <div>
+          <h3 className={styles.logo}>sneakers</h3>
+          <p>Магазин лучших кроссовок</p>
+        </div>
+      </Link>
+
       <ul className={styles.headerRight}>
         <li onClick={onCartClick}>
           <img
@@ -28,15 +31,16 @@ const Header = ({ onCartClick }) => {
           />
           <span>1205 руб.</span>
         </li>
+
         <li>
-          <NavLink to="/favorites">
+          <Link to="/favorites">
             <img
               src="/img/favorites.png"
               alt=""
               width={18}
               height={18}
             />
-          </NavLink>
+          </Link>
         </li>
         <li>
           <img

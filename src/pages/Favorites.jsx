@@ -1,4 +1,14 @@
-const Favorites = () => {
+import Card from "../components/Card";
+
+const Favorites = (props) => {
+  const {
+    favorites,
+    searchValue,
+    onChangeSearchInput,
+    setSearchValue,
+    onAddToFavorites,
+  } = props;
+
   return (
     <div className="content">
       <div className="content-wrapper">
@@ -26,9 +36,20 @@ const Favorites = () => {
         </div>
       </div>
 
-      <div className="card-wrapper">тут будут закладки</div>
+      <div className="card-wrapper">
+        <div>
+          {favorites.map((card) => (
+            <Card
+              key={card.id}
+              favorited={true}
+              onFavorites={onAddToFavorites}
+              {...card}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Home;
+export default Favorites;

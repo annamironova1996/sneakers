@@ -8,7 +8,30 @@ const Home = (props) => {
     cards,
     onAddToCard,
     onAddToFavorites,
+    cartItems,
+    favorites,
+    isLoading,
   } = props;
+
+  const renderItems = () => {
+    const filterItems =
+      cards &&
+      cards.filter((item) =>
+        item.title.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    return (isLoading ? [...Array(12)] : filterItems).map((card, index) => (
+      <Card
+        key={index}
+        onPlus={(obj) => onAddToCard(obj)}
+        onFavorites={(obj) => onAddToFavorites(obj)}
+        isLoading={isLoading}
+        added={cartItems.some((obj) => Number(obj.id) === Number(card.id))}
+        favorited={favorites.some((obj) => Number(obj.id) === Number(card.id))}
+        {...card}
+      />
+    ));
+  };
+
   return (
     <div className="content">
       <div className="content-wrapper">
@@ -36,22 +59,7 @@ const Home = (props) => {
         </div>
       </div>
 
-      <div className="card-wrapper">
-        {cards
-          .filter((item) =>
-            item.title.toLowerCase().includes(searchValue.toLowerCase())
-          )
-          .map((card) => (
-            <Card
-              key={card.id}
-              img={card.img}
-              title={card.title}
-              price={card.price}
-              onPlus={(obj) => onAddToCard(obj)}
-              onFavorites={(obj) => onAddToFavorites(obj)}
-            />
-          ))}
-      </div>
+      <div className="card-wrapper">{renderItems()}</div>
     </div>
   );
 };

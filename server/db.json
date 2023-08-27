@@ -76,16 +76,16 @@
   "cart": [],
   "favorites": [
     {
-      "title": "Мужские Кроссовки Nike LeBron XVIII",
-      "img": "/img/sneakers/8.jpg",
-      "price": "16 499",
-      "id": 1
-    },
-    {
       "title": "Мужские Кроссовки Nike Blazer Mid Suede",
       "img": "/img/sneakers/1.jpg",
       "price": "12 999",
-      "id": 2
+      "id": "1"
+    },
+    {
+      "title": "Мужские Кроссовки Nike Air Max 270",
+      "img": "/img/sneakers/2.jpg",
+      "price": "12 999",
+      "id": "2"
     }
   ]
 }
