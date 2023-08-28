@@ -1,13 +1,12 @@
+import React from "react";
 import Card from "../components/Card";
+import { MainContext } from "../App";
 
 const Favorites = (props) => {
-  const {
-    favorites,
-    searchValue,
-    onChangeSearchInput,
-    setSearchValue,
-    onAddToFavorites,
-  } = props;
+  const { favorites } = React.useContext(MainContext);
+
+  const { searchValue, onChangeSearchInput, setSearchValue, onAddToFavorites } =
+    props;
 
   return (
     <div className="content">

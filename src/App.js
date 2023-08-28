@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Route, Routes } from "react-router-dom";
@@ -5,6 +6,8 @@ import Header from "./components/Header";
 import Cart from "./components/Cart";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
+import Orders from "./pages/Orders";
+export const MainContext = React.createContext({});
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -50,11 +53,9 @@ function App() {
 
   const onAddToCard = async (obj) => {
     try {
-      if (cartItems.find((cartObj) => Number(cartObj) === Number(obj.id))) {
-        axios.delete("http://localhost:3001/cart");
-        setCartItems((prev) =>
-          prev.filter((item) => Number(item.id) !== Number(obj.id))
-        );
+      if (cartItems.find((cartObj) => cartObj.id === obj.id)) {
+        axios.delete(`http://localhost:3001/cart/${obj.id}`);
+        setCartItems((prev) => prev.filter((item) => item.id !== obj.id));
       }
       const { data } = await axios.post("http://localhost:3001/cart", obj);
       setCartItems((prev) => [...prev, data]);
@@ -72,50 +73,63 @@ function App() {
     setSearchValue(event.target.value);
   };
 
+  const getAddedItems = (id) => {
+    return cartItems.some((obj) => Number(obj.id) === Number(id));
+  };
+
   return (
-    <div className="header-wrapper">
-      {openCart && (
+    <MainContext.Provider
+      value={{ favorites, getAddedItems, cards, cartItems, setCartItems }}
+    >
+      <div className="header-wrapper">
         <Cart
           items={cartItems}
           onClick={() => setOpenCart(false)}
           onRemoveCartItem={onRemoveCartItem}
-        />
-      )}
-      <Header onCartClick={() => setOpenCart(true)} />
-
-      <Routes>
-        <Route
-          path="/favorites"
-          element={
-            <Favorites
-              favorites={favorites}
-              searchValue={searchValue}
-              onChangeSearchInput={onChangeSearchInput}
-              setSearchValue={setSearchValue}
-              onAddToFavorites={onAddToFavorites}
-            />
-          }
+          openCart={openCart}
         />
 
-        <Route
-          path="/"
-          exact
-          element={
-            <Home
-              favorites={favorites}
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              onChangeSearchInput={onChangeSearchInput}
-              cards={cards}
-              onAddToCard={onAddToCard}
-              onAddToFavorites={onAddToFavorites}
-              cartItems={cartItems}
-              isLoading={isLoading}
-            />
-          }
-        />
-      </Routes>
-    </div>
+        <Header onCartClick={() => setOpenCart(true)} />
+
+        <Routes>
+          <Route
+            path="/orders"
+            element={<Orders />}
+            exact
+          />
+          <Route
+            path="/favorites"
+            exact
+            element={
+              <Favorites
+                searchValue={searchValue}
+                onChangeSearchInput={onChangeSearchInput}
+                setSearchValue={setSearchValue}
+                onAddToFavorites={onAddToFavorites}
+              />
+            }
+          />
+
+          <Route
+            path="/"
+            exact
+            element={
+              <Home
+                favorites={favorites}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                onChangeSearchInput={onChangeSearchInput}
+                cards={cards}
+                onAddToCard={onAddToCard}
+                onAddToFavorites={onAddToFavorites}
+                cartItems={cartItems}
+                isLoading={isLoading}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </MainContext.Provider>
   );
 }
 

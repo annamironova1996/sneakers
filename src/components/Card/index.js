@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { React } from "react";
+import { MainContext } from "../../App";
 import ContentLoader from "react-content-loader";
 import styles from "./Card.module.sass";
 
@@ -11,11 +13,13 @@ const Card = (props) => {
     onPlus,
     onFavorites,
     favorited = false,
-    added = false,
     loading = false,
   } = props;
-  const [isAdded, setIsAdded] = useState(added);
+
+  const { getAddedItems } = useContext(MainContext);
   const [isFavorite, setIsFavorite] = useState(favorited);
+
+  console.log(title, getAddedItems(id));
 
   const handleClickFavorite = () => {
     onFavorites({ title, img, price, id });
@@ -24,7 +28,7 @@ const Card = (props) => {
 
   const handleClickPlus = () => {
     onPlus({ title, img, price, id });
-    setIsAdded(!isAdded);
+    getAddedItems();
   };
 
   return (
@@ -82,18 +86,20 @@ const Card = (props) => {
         </ContentLoader>
       ) : (
         <>
-          <button className={styles.cardFavorites}>
-            <img
-              onClick={handleClickFavorite}
-              width="100%"
-              height="100%"
-              src={
-                isFavorite
-                  ? "/img/buttons/heart_liked.svg"
-                  : "/img/buttons/heart_unliked.svg"
-              }
-            />
-          </button>
+          {onFavorites && (
+            <button className={styles.cardFavorites}>
+              <img
+                onClick={handleClickFavorite}
+                width="100%"
+                height="100%"
+                src={
+                  isFavorite
+                    ? "/img/buttons/heart_liked.svg"
+                    : "/img/buttons/heart_unliked.svg"
+                }
+              />
+            </button>
+          )}
           <img
             width={133}
             height={112}
@@ -105,20 +111,22 @@ const Card = (props) => {
               <span>Цена:</span>
               <b>{price} руб.</b>
             </div>
-            <button
-              className="button"
-              onClick={handleClickPlus}
-            >
-              <img
-                width={32}
-                height={32}
-                src={
-                  isAdded
-                    ? "img/buttons/button_checked.svg"
-                    : "/img/buttons/button_plus.svg"
-                }
-              />
-            </button>
+            {onPlus && (
+              <button
+                className="button"
+                onClick={handleClickPlus}
+              >
+                <img
+                  width={32}
+                  height={32}
+                  src={
+                    getAddedItems(id)
+                      ? "img/buttons/button_checked.svg"
+                      : "/img/buttons/button_plus.svg"
+                  }
+                />
+              </button>
+            )}
           </div>
         </>
       )}

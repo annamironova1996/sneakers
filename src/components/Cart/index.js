@@ -1,8 +1,46 @@
 import styles from "./Cart.module.sass";
+import axios from "axios";
+import Info from "../Info";
+import { MainContext } from "../../App";
+import { useContext, useState } from "react";
 
-const Cart = ({ onClick, items, onRemoveCartItem }) => {
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const Cart = ({ onClick, items, onRemoveCartItem, openCart }) => {
+  const [orderCompleted, setOrderCompleted] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+  const { setCartItems, cartItems } = useContext(MainContext);
+  const [orderLoading, setIsLoading] = useState(false);
+
+  const totalPrice = cartItems.reduce(
+    (sum, obj) => parseInt(obj.price) + sum,
+    0
+  );
+
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post("http://localhost:3001/orders", {
+        items: cartItems,
+      });
+
+      setOrderId(data.id);
+      setOrderCompleted(true);
+      setCartItems([]);
+
+      for (let i = 0; i < Array.length; i++) {
+        const item = cartItems[i];
+        await axios.delete("http://localhost:3001/cart/" + item.id);
+        await delay(1000);
+      }
+    } catch (error) {
+      console.log("Не удалось отправить заказ");
+    }
+    setIsLoading(false);
+  };
+
   return (
-    <div className="overlay">
+    <div className={${styles.overlay} ? ${opened ? styles.overlayVisable }}>
       <div className={styles.cart}>
         <div className={styles.cartTitleWrapper}>
           <h2>Корзина</h2>
@@ -31,7 +69,7 @@ const Cart = ({ onClick, items, onRemoveCartItem }) => {
 
                   <div className={styles.cartItemDescription}>
                     <p>{item.title}</p>
-                    <b>{item.ptice} руб.</b>
+                    <b>{item.price} руб.</b>
                   </div>
                   <button className={styles.cartCloseButton}>
                     <img
@@ -47,15 +85,19 @@ const Cart = ({ onClick, items, onRemoveCartItem }) => {
               <li className={styles.cartEndList}>
                 <span>Итого</span>
                 <div className={styles.cartEndLine}></div>
-                <b>21 498 руб.</b>
+                <b>{totalPrice} руб.</b>
               </li>
               <li className={styles.cartEndList}>
-                <span>Налог 5%:</span>
+                <span>Налог 5% :</span>
                 <div className={styles.cartEndLine}></div>
-                <b>1074 руб.</b>
+                <b>{Math.ceil((totalPrice / 100) * 5)}руб.</b>
               </li>
             </ul>
-            <button className="green-button">
+            <button
+              onClick={onClickOrder}
+              disabled={orderLoading}
+              className="green-button"
+            >
               Оформить заказ
               <img
                 src="/img/arrow.svg"
@@ -65,45 +107,17 @@ const Cart = ({ onClick, items, onRemoveCartItem }) => {
             </button>
           </section>
         ) : (
-          <div className={styles.cartBox}>
-            <img
-              className={styles.cartBoxImg}
-              src="/img/box.png"
-            />
-            <p>Корзина пустая</p>
-            <span>
-              Добавьте хотя бы одну парк кроссовок, чтобы сделать заказ.
-            </span>
-            <button
-              onClick={onClick}
-              className="green-button"
-            >
-              <img
-                src="/img/back_arrow.svg"
-                width={14}
-                height={12}
-              />
-              Вернуться назад
-            </button>
-          </div>
+          <Info
+            title={orderCompleted ? "Заказ оформлен!" : "Корзина пустая"}
+            description={
+              orderCompleted
+                ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке`
+                : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ"
+            }
+            img={orderCompleted ? "/img/order.png" : "/img/box.png"}
+            onClick={onClick}
+          />
         )}
-
-        {/* <div className={styles.cartItem}>
-            <div
-              style={{ backgroundImage: "url(/img/sneakers/1.jpg)" }}
-              className={styles.cartItemImg}
-            ></div>
-            <div className={styles.cartItemDescription}>
-              <p>Мужские Кроссовки Nike Blazer Mid Suede</p>
-              <b>12 999 руб.</b>
-            </div>
-            <button className={styles.cartCloseButton}>
-              <img
-                src="/img/buttons/button_remove.svg"
-                alt=""
-              />
-            </button>
-          </div> */}
       </div>
     </div>
   );

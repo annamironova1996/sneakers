@@ -79,6 +79,11 @@ h1,h2, h3, p
     &:hover
       img
         transform: translateX(-5px)
+    &:disabled 
+      background-color: #bebebe
+      cursor: default
+      img
+        transform: none
 
 .green-button
   width: 325px
@@ -95,8 +100,7 @@ h1,h2, h3, p
     background: lighten(#9dd558, 5%)
   &:active 
     background: darken(#9dd558, 5%)
-  img
-      
+  
       
 
     
