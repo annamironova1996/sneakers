@@ -8,7 +8,6 @@ const Home = (props) => {
     setSearchValue,
     onChangeSearchInput,
     cards,
-    cartItems,
     onAddToCard,
     onAddToFavorites,
     favorites,
@@ -26,7 +25,7 @@ const Home = (props) => {
     return (isLoading ? [...Array(12)] : filterItems).map((card) => (
       <Card
         key={card && card.id}
-        onPlus={onAddToCard}
+        onPlus={(obj) => onAddToCard(obj)}
         onFavorites={(obj) => onAddToFavorites(obj)}
         added={getAddedItems(card && card.id)}
         isLoading={isLoading}
@@ -38,6 +37,21 @@ const Home = (props) => {
 
   return (
     <div className="content">
+      <section className="content-banner">
+        <div className="content-banner-wrapper">
+          <p>
+            Stan Smith<span className="content-banner-text">, Forever!</span>
+          </p>
+          <img
+            className="content-banner-frog"
+            src="/img/frog.svg"
+          />
+          <img
+            className="content-banner-brand"
+            src="/img/brand.svg"
+          />
+        </div>
+      </section>
       <div className="content-wrapper">
         <h1>
           {searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}

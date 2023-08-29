@@ -44,7 +44,7 @@ const Header = ({ onCartClick }) => {
         <li>
           <Link to="/favorites">
             <img
-              src="/img/favorites.png"
+              src="/img/favorite.svg"
               alt=""
               width={18}
               height={18}

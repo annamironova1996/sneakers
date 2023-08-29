@@ -19,17 +19,21 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
-      const cartResponse = await axios.get("http://localhost:3001/cart");
-      const favoritesResponse = await axios.get(
-        "http://localhost:3001/favorites"
-      );
-      const cardResponse = await axios.get("http://localhost:3001/cards");
+      try {
+        setIsLoading(true);
+        const cartResponse = await axios.get("http://localhost:3001/cart");
+        const favoritesResponse = await axios.get(
+          "http://localhost:3001/favorites"
+        );
+        const cardResponse = await axios.get("http://localhost:3001/cards");
 
-      setIsLoading(false);
-      setCartItems(cartResponse.data);
-      setFavorites(favoritesResponse.data);
-      setCards(cardResponse.data);
+        setIsLoading(false);
+        setCartItems(cartResponse.data);
+        setFavorites(favoritesResponse.data);
+        setCards(cardResponse.data);
+      } catch (error) {
+        console.log("ошибка при запросе данных");
+      }
     }
     fetchData();
   }, []);
@@ -54,19 +58,24 @@ function App() {
   const onAddToCard = async (obj) => {
     try {
       if (cartItems.find((cartObj) => cartObj.id === obj.id)) {
-        axios.delete(`http://localhost:3001/cart/${obj.id}`);
         setCartItems((prev) => prev.filter((item) => item.id !== obj.id));
+        axios.delete(`http://localhost:3001/cart/${obj.id}`);
+      } else {
+        const { data } = await axios.post("http://localhost:3001/cart", obj);
+        setCartItems((prev) => [...prev, data]);
       }
-      const { data } = await axios.post("http://localhost:3001/cart", obj);
-      setCartItems((prev) => [...prev, data]);
     } catch (error) {
       console.log("Не удалось добавить в корзину");
     }
   };
 
   const onRemoveCartItem = (id) => {
-    axios.delete(`http://localhost:3001/cart/${id}`);
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    try {
+      axios.delete(`http://localhost:3001/cart/${id}`);
+      setCartItems((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.log("ошибка при удалении товара из корзины");
+    }
   };
 
   const onChangeSearchInput = (event) => {

@@ -73,7 +73,21 @@
       "id": "12"
     }
   ],
-  "cart": [],
-  "favorites": [],
+  "cart": [
+    {
+      "title": "Кроссовки Puma X Aka Boku Future Rider",
+      "img": "/img/sneakers/4.jpg",
+      "price": "8999",
+      "id": "4"
+    }
+  ],
+  "favorites": [
+    {
+      "title": "Мужские Кроссовки Nike Air Max 270",
+      "img": "/img/sneakers/2.jpg",
+      "price": "12999",
+      "id": "2"
+    }
+  ],
   "orders": []
 }

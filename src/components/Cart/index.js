@@ -40,7 +40,9 @@ const Cart = ({ onClick, items, onRemoveCartItem, openCart }) => {
   };
 
   return (
-    <div className={${styles.overlay} ? ${opened ? styles.overlayVisable }}>
+    <div
+      className={`${styles.overlay} ${openCart ? styles.overlayVisible : ""}`}
+    >
       <div className={styles.cart}>
         <div className={styles.cartTitleWrapper}>
           <h2>Корзина</h2>
