@@ -1,69 +1,70 @@
-import { useContext } from "react";
-import { MainContext } from "../../App";
-import { Link } from "react-router-dom";
-import styles from "./Header.module.sass";
+import { useContext } from 'react';
+import { MainContext } from '../../App';
+import { Link } from 'react-router-dom';
+import styles from './Header.module.sass';
 
 const Header = ({ onCartClick }) => {
-  const { cartItems } = useContext(MainContext);
+    const { cartItems } = useContext(MainContext);
 
-  const totalPrice = cartItems.reduce(
-    (sum, obj) => parseInt(obj.price) + sum,
-    0
-  );
+    const totalPrice = cartItems.reduce(
+        (sum, obj) => parseInt(obj.price) + sum,
+        0
+    );
 
-  return (
-    <header className={styles.header}>
-      <Link
-        className={styles.headerLeft}
-        to="/"
-      >
-        <img
-          src="/img/logo.png"
-          className="mr-15"
-          width={40}
-          height={40}
-        />
+    return (
+        <header className={styles.header}>
+            <Link
+                className={styles.headerLeft}
+                to="/"
+            >
+                <img
+                    src="/img/logo.svg"
+                    className="mr-15"
+                    width={40}
+                    height={40}
+                    alt="логотип"
+                />
 
-        <div>
-          <h3 className={styles.logo}>sneakers</h3>
-          <p>Магазин лучших кроссовок</p>
-        </div>
-      </Link>
+                <div>
+                    <h3 className={styles.logo}>STREET BEAT</h3>
+                    <p>Самые лучшие кроссовки на всей планете для девочек</p>
+                </div>
+            </Link>
 
-      <ul className={styles.headerRight}>
-        <li onClick={onCartClick}>
-          <img
-            width={18}
-            height={18}
-            alt=""
-            src="/img/cart.svg"
-          />
-          <span>{totalPrice} руб.</span>
-        </li>
+            <ul className={styles.headerRight}>
+                <li onClick={onCartClick}>
+                    <img
+                        width={18}
+                        height={18}
+                        alt=""
+                        src="/img/cart.svg"
+                    />
+                    <span>{totalPrice} руб.</span>
+                </li>
 
-        <li>
-          <Link to="/favorites">
-            <img
-              src="/img/favorite.svg"
-              alt=""
-              width={18}
-              height={18}
-            />
-          </Link>
-        </li>
-        <li>
-          <Link to="/orders">
-            <img
-              alt=""
-              src="/img/user.svg"
-              width={18}
-              height={18}
-            />
-          </Link>
-        </li>
-      </ul>
-    </header>
-  );
+                <li>
+                    <Link to="/favorites">
+                        <img
+                            src="/img/favorite.svg"
+                            alt=""
+                            width={18}
+                            height={18}
+                        />
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/orders">
+                        <img
+                            alt=""
+                            src="/img/user.svg"
+                            width={18}
+                            height={18}
+                        />
+                    </Link>
+                </li>
+            </ul>
+        </header>
+    );
 };
 
 export default Header;
